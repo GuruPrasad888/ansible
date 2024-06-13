@@ -3,6 +3,6 @@
 - name: Copy the fluent-bit configuration
   copy:
     src: ../files/fluent-bit.conf
-    dest: /etc/fluent-bit/
+    dest: /etc/fluent-bit/fluent-bit.conf
   notify:
     - Restart Fluent Bit

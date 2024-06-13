@@ -19,9 +19,9 @@ SYSLOG = "syslog"
 SPLUNK = "splunk"
 
 CONFIGURATION_FILES_BASE_DIRECTORY = "roles/fluent_bit/files"
-INFLUX_CONFIGURATION_FILE_PATH = "influx/fluent-bit.conf"
-SPLUNK_CONFIGURATION_FILE_PATH = "splunk/fluent-bit.conf"
-SYSLOG_CONFIGURATION_FILE_PATH = "syslog/fluent-bit.conf"
+INFLUXDB_CONFIGURATION_FILE_PATH = "influxdb.conf"
+SPLUNK_CONFIGURATION_FILE_PATH = "splunk.conf"
+SYSLOG_CONFIGURATION_FILE_PATH = "syslog.conf"
 
 TASK_FILE_PATH = "roles/fluent_bit/tasks/main.yml"
 
@@ -41,7 +41,7 @@ class FluentbitManager(ServiceManager):
         self._database_manager = database_manager
         self._status_manager = status_manager
 
-        self.__influx_configuration_file_path = CONFIGURATION_FILES_BASE_DIRECTORY + PATH_SEPERATOR_CHARACTER + INFLUX_CONFIGURATION_FILE_PATH
+        self.__influx_configuration_file_path = CONFIGURATION_FILES_BASE_DIRECTORY + PATH_SEPERATOR_CHARACTER + INFLUXDB_CONFIGURATION_FILE_PATH
         self.__splunk_configuration_file_path = CONFIGURATION_FILES_BASE_DIRECTORY + PATH_SEPERATOR_CHARACTER + SPLUNK_CONFIGURATION_FILE_PATH
         self.__syslog_configuration_file_path = CONFIGURATION_FILES_BASE_DIRECTORY + PATH_SEPERATOR_CHARACTER + SYSLOG_CONFIGURATION_FILE_PATH
 

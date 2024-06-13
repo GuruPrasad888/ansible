@@ -69,6 +69,7 @@ class ActionHandler():
                             pass
                         else:
                             self.__logger.error("Failed to generate inventory")
+                            self._status_manager.update_status(message_dictionary = self._message_dictionary, status = False)
                             continue
 
                     self.__service_manager_dictionary[validated_data[MessageDefinitions.SERVICE_CODE_KEY]].service_handler_function(validated_data)
