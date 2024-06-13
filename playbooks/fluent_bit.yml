@@ -1,0 +1,5 @@
+---
+- name: Configure Fluent-bit
+  hosts: all
+  roles:
+    - role: ../roles/fluent_bit

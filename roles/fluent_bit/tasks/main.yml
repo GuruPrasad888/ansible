@@ -1,0 +1,8 @@
+---
+
+- name: Copy the fluent-bit configuration
+  copy:
+    src: ../files/fluent-bit.conf
+    dest: /etc/fluent-bit/
+  notify:
+    - Restart Fluent Bit

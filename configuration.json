@@ -1,0 +1,19 @@
+{
+    "base_directory": "/home/guru/",
+    "postgres_configuration": 
+    {
+      "db_user": "freddy",
+      "db_password": "freddychris",
+      "db_host": "172.168.6.24",
+      "db_port": "5432",
+      "db_name": "chiefnet_db"
+    },
+    "redis_configuration": 
+    {
+      "redis_host": "172.168.6.24",
+      "redis_port": "6379",
+      "redis_password": "chiefnet-redis",
+      "redis_channel": "ansible"
+    }
+}
+  
