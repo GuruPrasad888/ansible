@@ -204,7 +204,7 @@ class DatabaseManager:
     def get_ssh_key_and_update_status(self, device_id):
         ssh_keys = []
         try:
-            ssh_keys_query = self.__session.query(DeviceKeys).filter(DeviceKeys.deleted_at == None).all()
+            ssh_keys_query = self.__session.query(DeviceKeys.ssh_key).filter(DeviceKeys.deleted_at == None).all()
             
             ssh_keys = [record.ssh_key for record in ssh_keys_query]
 

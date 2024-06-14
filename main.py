@@ -3,12 +3,12 @@ import sys
 
 import Definitions.message_code_definitions as MessageCodeDefinitions
 
-from CoreCode.configuration_manager import ConfigurationManager
 from CoreCode.redis_manager import RedisManager
+from CoreCode.status_manager import StatusManager
+from CoreCode.action_handler import ActionHandler
 from CoreCode.database_manager import DatabaseManager
 from CoreCode.inventory_manager import InventoryManager
-from CoreCode.action_handler import ActionHandler
-from CoreCode.status_manager import StatusManager
+from CoreCode.configuration_manager import ConfigurationManager
 
 from CoreCode.authorized_keys_manager import AuthorizedKeysManager
 from CoreCode.fluent_bit_manager import FluentbitManager
@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     redis_manager.register_receive_data_callback(receive_data_callback=action_handler.message_receive_callback)
 
-    authorized_keys_manager = AuthorizedKeysManager(configuration_manager=configuration_manager ,database_manager=database_manager,status_manager=status_manager)
+    authorized_keys_manager = AuthorizedKeysManager(configuration_manager=configuration_manager ,database_manager=database_manager, status_manager=status_manager)
     fluent_bit_manager = FluentbitManager(database_manager=database_manager, status_manager=status_manager)
 
     action_handler.register_service_manager_callback(service_code=MessageCodeDefinitions.AUTHORIZED_KEYS_MANAGER, service_manager=authorized_keys_manager)

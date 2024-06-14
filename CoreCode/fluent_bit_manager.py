@@ -36,7 +36,7 @@ class FluentbitManager(ServiceManager):
     def __init__(self, database_manager, status_manager):
         self.__logger = Logger.get_logger(logger_name=__name__)
 
-        self.__logger.info("Fluent Bit initializer starts")
+        self.__logger.info("Fluent Bit manager initializer starts")
 
         self._database_manager = database_manager
         self._status_manager = status_manager
@@ -53,7 +53,7 @@ class FluentbitManager(ServiceManager):
 
         ServiceManager.__init__(self, status_manager= status_manager, event_dictionary=event_dictionary)
 
-        self.__logger.info("Fluent Bit initializer ends")
+        self.__logger.info("Fluent Bit manager initializer ends")
 
 
     def __configure_fluentbit(self):
@@ -249,15 +249,15 @@ class FluentbitManager(ServiceManager):
     def __change_source_file_path_in_tasks(self, file_path):
         try:
             with open(self.__task_file_path, SystemDefinitions.FILE_READ_MODE) as file:
-                playbook = yaml.safe_load(file)
+                tasks = yaml.safe_load(file)
 
-            for task in playbook:
+            for task in tasks:
                 if task.get("name") == "Copy the fluent-bit configuration":
                     if "copy" in task and "src" in task["copy"]:
                         task["copy"]["src"] = file_path
 
             with open(self.__task_file_path, SystemDefinitions.FILE_WRITE_MODE) as file:
-                yaml.safe_dump(playbook, file, default_flow_style=False)
+                yaml.safe_dump(tasks, file, default_flow_style=False)
 
             self.__logger.info("Successfully updated the source path to {}".format(file_path))
             return True
