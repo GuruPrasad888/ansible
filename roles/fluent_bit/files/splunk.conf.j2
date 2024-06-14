@@ -26,21 +26,21 @@
 [FILTER]
     Name         grep
     Match        syslog.*
-    Regex        level ($i)(INFO|ERROR|CRITICAL|WARNING)
+    Regex        level ($i){{ log_levels }}
 
 [FILTER]
     Name         grep
     Match        openvpn.*
-    Regex        level ($i)(INFO|ERROR|CRITICAL|WARNING)
+    Regex        level ($i){{ log_levels }}
 
 [OUTPUT]
-    Name         syslog
+    Name         splunk
     Match        *
-    Host         syslog.example.com
-    Port         514
-    Mode         tcp
-    Syslog_Format rfc5424
-    Syslog_Hostname your_hostname
-    Syslog_Appname your_appname
-    Syslog_Severity info
+    Host         {{ splunk_host }}
+    Port         {{ splunk_port }}
+    Splunk_Token {{ splunk_token }}
+    splunk_send_raw {{ splunk_send_raw }}
+    splunk_sourcetype {{ splunk_source_type }}
+    splunk_index {{ splunk_index }}
+    tls.verify   Off
 

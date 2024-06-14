@@ -1,7 +1,7 @@
 ---
 
 - name: Copy the fluent-bit configuration
-  copy:
+  template:
     src: ../files/fluent-bit.conf
     dest: /etc/fluent-bit/fluent-bit.conf
   notify:

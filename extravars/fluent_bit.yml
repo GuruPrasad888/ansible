@@ -1,0 +1,23 @@
+log_levels:
+
+# Influx DB
+influx_domain_name_or_ip:
+influx_port:
+influx_bucket_name:
+influx_organization_name:
+influx_token:
+tls:
+
+# Splunk
+splunk_host:
+splunk_port:
+splunk_token:
+splunk_send_raw:
+splunk_source_type:
+splunk_index:
+
+# Syslog
+syslog_host:
+syslog_port:
+syslog_hostname:
+syslog_appname:

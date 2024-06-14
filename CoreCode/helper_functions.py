@@ -1,16 +1,19 @@
-import ansible_runner
 import json
+import ansible_runner
+
+import Definitions.system_definitions as SystemDefinitions
 
 INVENTORY_PATH = "CoreCode/inventory.yml"
 
 
-def run_playbook(playbook_path, logger_object):
+def run_playbook(playbook_path, extravars_file_path, logger_object):
     ansible_stats = {}
 
     try:
         runner = ansible_runner.run(
         playbook=playbook_path,
-        inventory=INVENTORY_PATH,
+        inventory=SystemDefinitions.INVENTORY_FILE_PATH,
+        extravars=extravars_file_path
         )
 
         ansible_stats = json.dumps(runner.stats)

@@ -94,14 +94,15 @@
     Name modify
     Match syslog
     Add _hostname {{ ansible_facts['hostname'] }}
+    Regex         level ($i){{ log_levels }}
 
 [OUTPUT]
     Name          influxdb
     Match         syslog
-    Host          {{ influxdb_domain_name }}
-    Port          443
-    Bucket        CPEsyslog
-    Org           {{ organization_name }}
-    HTTP_Token    {{ influx_write_token }}
-    TLS           on
+    Host          {{ influx_domain_name_or_ip }}
+    Port          {{ influx_port }}
+    Bucket        {{ influx_bucket_name }}
+    Org           {{ influx_organization_name }}
+    HTTP_Token    {{ influx_token }}
+    TLS           {{ tls }}
     Tag_Keys      _hostname
