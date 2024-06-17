@@ -3735,3 +3735,52 @@ WHERE ansible_queues.state = %(state_1)s]
 2024-06-17 09:55:04,044 | ERROR | redis_manager.py | 64 | redis_manager | __connection_handler_async | Connection handler error: Error 113 connecting to 172.168.6.24:6379. No route to host.
 2024-06-17 09:55:07,117 | ERROR | redis_manager.py | 64 | redis_manager | __connection_handler_async | Connection handler error: Error 113 connecting to 172.168.6.24:6379. No route to host.
 2024-06-17 09:55:10,188 | ERROR | redis_manager.py | 64 | redis_manager | __connection_handler_async | Connection handler error: Error 113 connecting to 172.168.6.24:6379. No route to host.
+2024-06-17 10:44:23,142 | INFO | configuration_manager.py | 13 | configuration_manager | __init__ | ConfigurationManager initializer start
+2024-06-17 10:44:23,142 | INFO | configuration_manager.py | 24 | configuration_manager | __init__ | ConfigurationManager initializer end
+2024-06-17 10:44:23,143 | INFO | redis_manager.py | 19 | redis_manager | __init__ | RedisManager initialization starts
+2024-06-17 10:44:23,143 | INFO | redis_manager.py | 26 | redis_manager | __init__ | RedisManager initialization ends
+2024-06-17 10:44:23,144 | INFO | database_manager.py | 69 | database_manager | __init__ | DatabaseManager initialization starts
+2024-06-17 10:44:23,182 | INFO | database_manager.py | 82 | database_manager | __init__ | DatabaseManager initialization ends
+2024-06-17 10:44:23,182 | INFO | inventory_manager.py | 15 | inventory_manager | __init__ | InventoryManager initialization starts
+2024-06-17 10:44:23,182 | INFO | inventory_manager.py | 19 | inventory_manager | __init__ | InventoryManager initialization ends
+2024-06-17 10:44:23,182 | INFO | action_handler.py | 16 | action_handler | __init__ | ActionHandler object initialization starts
+2024-06-17 10:44:23,183 | INFO | action_handler.py | 31 | action_handler | __init__ | ActionHandler object initialization ends
+2024-06-17 10:44:23,183 | INFO | status_manager.py | 17 | status_manager | __init__ | StatusManager initialization starts
+2024-06-17 10:44:23,183 | INFO | status_manager.py | 21 | status_manager | __init__ | StatusManager initialization ends
+2024-06-17 10:44:23,183 | INFO | authorized_keys_manager.py | 24 | authorized_keys_manager | __init__ | Authorized keys manager initializer starts
+2024-06-17 10:44:23,183 | INFO | service_manager.py | 16 | service_manager | __init__ | ServiceManager initializer starts
+2024-06-17 10:44:23,183 | INFO | service_manager.py | 22 | service_manager | __init__ | ServiceManager initializer ends
+2024-06-17 10:44:23,183 | INFO | authorized_keys_manager.py | 37 | authorized_keys_manager | __init__ | Authorized keys manager initializer ends
+2024-06-17 10:44:23,183 | INFO | fluent_bit_manager.py | 39 | fluent_bit_manager | __init__ | Fluent Bit manager initializer starts
+2024-06-17 10:44:23,183 | INFO | service_manager.py | 16 | service_manager | __init__ | ServiceManager initializer starts
+2024-06-17 10:44:23,183 | INFO | service_manager.py | 22 | service_manager | __init__ | ServiceManager initializer ends
+2024-06-17 10:44:23,183 | INFO | fluent_bit_manager.py | 57 | fluent_bit_manager | __init__ | Fluent Bit manager initializer ends
+2024-06-17 10:44:25,452 | ERROR | redis_manager.py | 64 | redis_manager | __connection_handler_async | Connection handler error: Error 113 connecting to 172.168.6.24:6379. No route to host.
+2024-06-17 10:44:28,524 | ERROR | redis_manager.py | 64 | redis_manager | __connection_handler_async | Connection handler error: Error 113 connecting to 172.168.6.24:6379. No route to host.
+2024-06-17 10:44:31,596 | ERROR | redis_manager.py | 64 | redis_manager | __connection_handler_async | Connection handler error: Error 113 connecting to 172.168.6.24:6379. No route to host.
+2024-06-17 11:04:27,948 | INFO | configuration_manager.py | 13 | configuration_manager | __init__ | ConfigurationManager initializer start
+2024-06-17 11:04:27,948 | INFO | configuration_manager.py | 24 | configuration_manager | __init__ | ConfigurationManager initializer end
+2024-06-17 11:04:27,948 | INFO | redis_manager.py | 19 | redis_manager | __init__ | RedisManager initialization starts
+2024-06-17 11:04:27,949 | INFO | redis_manager.py | 26 | redis_manager | __init__ | RedisManager initialization ends
+2024-06-17 11:04:27,949 | INFO | database_manager.py | 69 | database_manager | __init__ | DatabaseManager initialization starts
+2024-06-17 11:04:46,815 | INFO | configuration_manager.py | 13 | configuration_manager | __init__ | ConfigurationManager initializer start
+2024-06-17 11:04:46,815 | INFO | configuration_manager.py | 24 | configuration_manager | __init__ | ConfigurationManager initializer end
+2024-06-17 11:04:46,815 | INFO | redis_manager.py | 19 | redis_manager | __init__ | RedisManager initialization starts
+2024-06-17 11:04:46,815 | INFO | redis_manager.py | 26 | redis_manager | __init__ | RedisManager initialization ends
+2024-06-17 11:04:46,816 | INFO | database_manager.py | 69 | database_manager | __init__ | DatabaseManager initialization starts
+2024-06-17 11:04:46,841 | INFO | database_manager.py | 82 | database_manager | __init__ | DatabaseManager initialization ends
+2024-06-17 11:04:46,841 | INFO | inventory_manager.py | 15 | inventory_manager | __init__ | InventoryManager initialization starts
+2024-06-17 11:04:46,841 | INFO | inventory_manager.py | 19 | inventory_manager | __init__ | InventoryManager initialization ends
+2024-06-17 11:04:46,841 | INFO | action_handler.py | 16 | action_handler | __init__ | ActionHandler object initialization starts
+2024-06-17 11:04:46,841 | INFO | action_handler.py | 31 | action_handler | __init__ | ActionHandler object initialization ends
+2024-06-17 11:04:46,841 | INFO | status_manager.py | 17 | status_manager | __init__ | StatusManager initialization starts
+2024-06-17 11:04:46,841 | INFO | status_manager.py | 21 | status_manager | __init__ | StatusManager initialization ends
+2024-06-17 11:04:46,841 | INFO | authorized_keys_manager.py | 24 | authorized_keys_manager | __init__ | Authorized keys manager initializer starts
+2024-06-17 11:04:46,841 | INFO | service_manager.py | 16 | service_manager | __init__ | ServiceManager initializer starts
+2024-06-17 11:04:46,841 | INFO | service_manager.py | 22 | service_manager | __init__ | ServiceManager initializer ends
+2024-06-17 11:04:46,842 | INFO | authorized_keys_manager.py | 37 | authorized_keys_manager | __init__ | Authorized keys manager initializer ends
+2024-06-17 11:04:46,842 | INFO | fluent_bit_manager.py | 39 | fluent_bit_manager | __init__ | Fluent Bit manager initializer starts
+2024-06-17 11:04:46,842 | INFO | service_manager.py | 16 | service_manager | __init__ | ServiceManager initializer starts
+2024-06-17 11:04:46,842 | INFO | service_manager.py | 22 | service_manager | __init__ | ServiceManager initializer ends
+2024-06-17 11:04:46,842 | INFO | fluent_bit_manager.py | 57 | fluent_bit_manager | __init__ | Fluent Bit manager initializer ends
+2024-06-17 11:04:46,889 | INFO | redis_manager.py | 57 | redis_manager | __connection_handler_async | Subscribed to Redis channel ansible
