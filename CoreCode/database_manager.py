@@ -17,8 +17,8 @@ DB_HOST = "db_host"
 DB_PORT = "db_port"
 DB_NAME = "db_name"
 
-TIMEZONE = 'Asia/Kolkata'
-IN_PROGRESS_KEYWORD = 'in_progress'
+TIMEZONE = "Asia/Kolkata"
+IN_PROGRESS_KEYWORD = "in_progress"
 
 COMPLETED = "completed"
 FAILED = "failed"
@@ -191,13 +191,13 @@ class DatabaseManager:
                     self.__logger.info("All ports are none in the message dictionary")
             else:
                 self.__logger.error("Failed to get ports from the message dictionary")
-                return False, ports_to_be_killed
+                return ports_to_be_killed
 
         except Exception as exception:
             self.__logger.error("Failed to get the list of ports to be killed: {}".format(exception))
-            return False, ports_to_be_killed
+            return ports_to_be_killed
         
-        return True, ports_to_be_killed
+        return ports_to_be_killed
 
 
 #DeviceKeys
@@ -222,8 +222,9 @@ class DatabaseManager:
         except Exception as exception:
             self.__session.rollback()
             self.__logger.error("Failed to get ssh key and update status: {}".format(exception))
-            return False, ssh_keys
-        return True, ssh_keys
+            return ssh_keys
+        
+        return ssh_keys
     
 
     def update_port_status_in_device_keys(self, device_ids):
@@ -246,4 +247,35 @@ class DatabaseManager:
  
 
 #LogForwarding
-#    def get_fluentbit_configuration(self, organization_id):
+    def get_fluentbit_configuration(self, organization_id):
+        result = {}
+        try:
+
+            org_entry = self.__session.query(LogForwarding).filter(LogForwarding.organization_id == organization_id).first()
+
+            if org_entry:
+                if org_entry.is_external_forwarding_enabled:
+                    result = {
+                        "log_type": org_entry.log_destination,
+                        "log_value": org_entry.log_value
+                    }
+                else:
+                    null_org_entry = self.__session.query(LogForwarding).filter(LogForwarding.organization_id == None).first()
+                    if null_org_entry:
+                        result = {
+                            "log_type": null_org_entry.log_destination,
+                            "log_value": null_org_entry.log_value
+                        }
+            else:
+                null_org_entry = self.__session.query(LogForwarding).filter(LogForwarding.organization_id == None).first()
+                if null_org_entry:
+                    result = {
+                        "log_type": null_org_entry.log_destination,
+                        "log_value": null_org_entry.log_value
+                    }
+
+            self.__logger.info("Successfully queried log forwarding details")
+            return result
+        
+        except Exception as exception:
+            self.__logger.error("Failed to get the log forwarding details{}".format(exception))

@@ -44,10 +44,9 @@ class AuthorizedKeysManager(ServiceManager):
         ansible_queue_id = next(iter(content.keys()))
         device_id = content[ansible_queue_id][0]
 
-        status, ssh_keys = self._database_manager.get_ssh_key_and_update_status(device_id)
+        ssh_keys = self._database_manager.get_ssh_key_and_update_status(device_id)
         
-        if status == True:
-            self.__logger.error(ssh_keys)
+        if ssh_keys:
             try:
                 if os.path.exists(self.__authorized_keys_file_path):
                     with open(self.__authorized_keys_file_path, SystemDefinitions.FILE_APPEND_MODE) as file:

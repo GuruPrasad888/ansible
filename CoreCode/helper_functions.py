@@ -3,9 +3,6 @@ import ansible_runner
 
 import Definitions.system_definitions as SystemDefinitions
 
-INVENTORY_PATH = "CoreCode/inventory.yml"
-
-
 def run_playbook(playbook_path, extravars_file_path, logger_object):
     ansible_stats = {}
 
@@ -18,6 +15,7 @@ def run_playbook(playbook_path, extravars_file_path, logger_object):
 
         ansible_stats = json.dumps(runner.stats)
         logger_object.info("Ansible playbook execution successful")
+        return ansible_stats
     
     except Exception as exception:
         logger_object.error("Error running ansible playbook: {}".format(exception))
@@ -32,10 +30,8 @@ def get_ansible_queue_id_and_port_from_content(content, logger_object):
             port = value[1]
             id_and_port_dict[id] = port
         else:
-            logger_object.error()
             return False, id_and_port_dict
     
-    logger_object.info()
     return True, id_and_port_dict
 
 
@@ -64,10 +60,8 @@ def get_device_id_from_content(content, logger_object):
             device_id = value[0]
             device_ids.append(device_id)
         else:
-            logger_object.error()
             return False, device_ids
     
-    logger_object.info()
     return True, device_ids
 
 
@@ -79,8 +73,6 @@ def get_ports_from_content(content, logger_object):
             port = value[1]
             ports.append(port)
         else:
-            logger_object.error()
             return False, ports
     
-    logger_object.info()
     return True, ports

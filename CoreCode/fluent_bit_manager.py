@@ -1,4 +1,3 @@
-import re
 import os
 import yaml
 
@@ -27,7 +26,7 @@ FLUENT_BIT_EXTRAVARS_FILE_NAME = "fluent_bit.yml"
 
 FLUENT_BIT_TASK_FILE_PATH = "fluent_bit/tasks/main.yml"
 
-FLUENT_BIT_PLAYBOOK_PATH = "playbooks/fluent_bit.yml"
+FLUENT_BIT_PLAYBOOK_NAME = "fluent_bit.yml"
 
 PATH_SEPERATOR_CHARACTER = os.path.sep
 
@@ -47,11 +46,11 @@ class FluentbitManager(ServiceManager):
         self.__syslog_configuration_file_path = SystemDefinitions.ROLES_BASE_DIRECTORY + PATH_SEPERATOR_CHARACTER + FLUENT_BIT_CONFIGURATION_FILES_BASE_DIRECTORY + PATH_SEPERATOR_CHARACTER + SYSLOG_CONFIGURATION_FILE_PATH
 
         self.__task_file_path = SystemDefinitions.ROLES_BASE_DIRECTORY + PATH_SEPERATOR_CHARACTER + FLUENT_BIT_TASK_FILE_PATH
-        self.__playbook_path = SystemDefinitions.PLAYBOOKS_BASE_DIRECTORY + PATH_SEPERATOR_CHARACTER + FLUENT_BIT_PLAYBOOK_PATH
+        self.__playbook_path = SystemDefinitions.PLAYBOOKS_BASE_DIRECTORY + PATH_SEPERATOR_CHARACTER + FLUENT_BIT_PLAYBOOK_NAME
         self.__extravars_file_path = SystemDefinitions.EXTRAVARS_BASE_DIRECTORY + PATH_SEPERATOR_CHARACTER + FLUENT_BIT_EXTRAVARS_FILE_NAME
 
         event_dictionary = {}
-        event_dictionary[MessageCodeDefinitions.FLUENT_BIT_INFLUX] = self.__configure_fluentbit
+        event_dictionary[MessageCodeDefinitions.FLUENT_BIT_EVENT] = self.__configure_fluentbit
 
         ServiceManager.__init__(self, status_manager= status_manager, event_dictionary=event_dictionary)
 
@@ -65,13 +64,19 @@ class FluentbitManager(ServiceManager):
         if self.__edit_extravars(configuration=configuration) == True:
                 
             if self.__change_source_file_path_in_tasks(configuration=configuration) == True:
-                    
-                    if self.__run_playbook_and_update_status == True:
+                
+                ansible_stats = HelperFunctions.run_playbook(playbook_path=self.__playbook_path, extravars_file_path=self.__extravars_file_path, logger_object=self.__logger)
+
+                if ansible_stats == True:
+                    if self._status_manager.update_status(message_dictionary = self._message_dictionary, ansible_stats = ansible_stats) == True:
                         return True
                     else:
-                        return False  
-            
+                        return False
+                else:
+                    self._status_manager.update_status(message_dictionary = self._message_dictionary, status = False)
+                    return False
             else:
+                self._status_manager.update_status(message_dictionary = self._message_dictionary, status = False)
                 return False
         else:
             self._status_manager.update_status(message_dictionary = self._message_dictionary, status = False)
@@ -85,16 +90,17 @@ class FluentbitManager(ServiceManager):
 
             with open(self.__extravars_file_path, SystemDefinitions.FILE_READ_MODE) as file:
                 content = yaml.safe_load(file)
-            content['log_levels']               = f"({log_levels_pattern})"
+            
+            content["log_levels"] = f"({log_levels_pattern})"
 
             if type == INFLUX:
 
-                content['influx_domain_name_or_ip'] = configuration[LOG_VALUE]['influx_domain_name_or_ip']
-                content['influx_port']              = configuration[LOG_VALUE]['influx_port']
-                content['influx_bucket_name']       = configuration[LOG_VALUE]['influx_bucket_name']
-                content['influx_organization_name'] = configuration[LOG_VALUE]['influx_organization_name']
-                content['influx_token']             = configuration[LOG_VALUE]['influx_token']
-                content['tls']                      = configuration[LOG_VALUE]['tls']
+                content["influx_domain_name_or_ip"] = configuration[LOG_VALUE]["influx_domain_name_or_ip"]
+                content["influx_port"]              = configuration[LOG_VALUE]["influx_port"]
+                content["influx_bucket_name"]       = configuration[LOG_VALUE]["influx_bucket_name"]
+                content["influx_organization_name"] = configuration[LOG_VALUE]["influx_organization_name"]
+                content["influx_token"]             = configuration[LOG_VALUE]["influx_token"]
+                content["tls"]                      = configuration[LOG_VALUE]["tls"]
 
             elif type == SPLUNK:
 
@@ -112,8 +118,15 @@ class FluentbitManager(ServiceManager):
                 content["syslog_hostname"]  = configuration[LOG_VALUE]["syslog_hostname"]
                 content["syslog_appname"]   = configuration[LOG_VALUE]["syslog_appname"]
 
+            else:
+                self.__logger.error("Undefined type received: {}".format(type))
+                return False
+
             with open(self.__extravars_file_path, SystemDefinitions.FILE_WRITE_MODE) as file:
                 yaml.dump(content, file, default_flow_style=False)
+
+            self.__logger.info("Extravars file updated succcessfully")
+            return True
 
         except Exception as exception:
             self.__logger.error("Error editing extravars file: {}".format(exception))
@@ -151,16 +164,3 @@ class FluentbitManager(ServiceManager):
             self.__logger.error("Error updating the source path: {}".format(exception))
             return False
         
-
-    def __run_playbook_and_update_status(self):
-        playbook_run_status, ansible_stats = HelperFunctions.run_playbook(playbook_path=self.__playbook_path, extravars_file_path=self.__extravars_file_path, logger_object=self.__logger)
-        if playbook_run_status == True:
-            
-            if self._status_manager.update_status(message_dictionary = self._message_dictionary, ansible_stats = ansible_stats) == True:
-                self.__logger.info("Successfully updated status in the ansible queue")
-                return True
-            else:
-                self.__logger.error("Failed to update status in the ansible queue")
-                return False
-        else:
-            return False

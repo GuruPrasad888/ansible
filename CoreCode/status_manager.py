@@ -27,9 +27,12 @@ class StatusManager():
             try:
                 parsed_stats = self.__parse_ansible_runner_stats(ansible_stats)
                 if self.__update_status_in_database(message_dictionary=message_dictionary, status=parsed_stats):
+                    self.__logger.info("Successfully updated status in the database")
                     return True
                 else:
+                    self.__logger.error("Failed to update status in the database")
                     return False
+            
             except Exception as exception:
                 self.__logger.error("Updating status failed {}".format(exception))
                 return False
@@ -44,14 +47,18 @@ class StatusManager():
                     framed_status[MessageDefinitions.FAILED_KEYWORD] = list(message_dictionary[MessageDefinitions.CONTENT_KEY].keys())
 
                 if self.__update_status_in_database(message_dictionary=message_dictionary, status=framed_status):
+                    self.__logger.info("Successfully updated status in the database")
                     return True
                 else:
+                    self.__logger.error("Failed to update status in the database")
                     return False
             except Exception as exception:
                 self.__logger.error("Updating status failed {}".format(exception))
+                return False
 
 
     def __parse_ansible_runner_stats(self, stats):
+
         parsed_stats = {MessageDefinitions.SUCCESS_KEYWORD: [],MessageDefinitions.FAILED_KEYWORD: []}
 
         processed_devices = stats.get(PROCESSED_KEYWORD, {}).keys()
@@ -72,21 +79,19 @@ class StatusManager():
 
     def __update_status_in_database(self, message_dictionary, status):
         if self._database_manager.update_status_in_ansible_queue(status) == True:
-            status, ports_to_kill = self._database_manager.get_ports_to_kill(message_dictionary)    # ports_to_kill is a dictionary {device_id:port}
             
-            if status == True:
-                if ports_to_kill != {}:
-                    device_ids =  self.__kill_processes_on_ports(ports_to_kill=ports_to_kill)
-                    if self._database_manager.update_port_status_in_device_keys(device_ids) == True:
-                        return True
-                    else:
-                        return False
-                else:
-                    self.__logger.info("No ports founnd to kill processess")
+            ports_to_kill = self._database_manager.get_ports_to_kill(message_dictionary)
+            
+            if ports_to_kill != {}:
+                device_ids =  self.__kill_processes_on_ports(ports_to_kill=ports_to_kill)
+                if self._database_manager.update_port_status_in_device_keys(device_ids) == True:
                     return True
+                else:
+                    return False
             else:
-                self.__logger.error("Failed to get the ports to be killed. Hence failed to kill the processes")
-                return False         
+                self.__logger.info("No ports founnd to kill processess")
+                return True
+            
         else:
             self.__logger.error("Updating status in ansible queue failed. Hence failed to get the list of ports to kill")
             return False        
